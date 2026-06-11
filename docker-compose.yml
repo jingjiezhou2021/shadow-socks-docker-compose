@@ -21,4 +21,4 @@ services:
         max_attempts: 0           # unlimited restarts
         window: 60s
     volumes:
-      - /etc/shadowsocks-libev/config.json:/etc/shadowsocks-libev/config.json:ro
+      - ./config.json:/etc/shadowsocks-libev/config.json:ro
