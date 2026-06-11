@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  ss-server:
+    image: musketeerdt/shadowsocks-libev:latest
+    ports:
+      - "8388:8388/tcp"
+      - "8388:8388/udp"
+    command: ss-server -c /etc/shadowsocks-libev/config.json
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8388"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any            # restart on failure or shutdown
+        delay: 5s                 # wait 5s before restarting
+        max_attempts: 0           # unlimited restarts
+        window: 60s
+    volumes:
+      - /etc/shadowsocks-libev/config.json:/etc/shadowsocks-libev/config.json:ro
